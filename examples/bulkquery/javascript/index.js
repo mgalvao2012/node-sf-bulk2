@@ -7,13 +7,13 @@ async function submitBulkQueryJob() {
         await conn.login(process.env.username, process.env.password);
         const bulkconnect = {
             'accessToken': conn.accessToken,
-            'apiVersion': '51.0',
+            'apiVersion': '54.0',
             'instanceUrl': conn.instanceUrl
         };
         try {
             const bulkapi2 = new sfbulk.BulkAPI2(bulkconnect);
             const queryInput = {
-                'query': 'Select Id from Account',
+                'query': 'Select Id, Name from Account',
                 'operation': 'query'
             };
             const response = await bulkapi2.submitBulkQueryJob(queryInput);

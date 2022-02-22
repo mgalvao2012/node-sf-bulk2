@@ -9,7 +9,7 @@ const fs = require('fs');
         await conn.login(process.env.username, process.env.password);
         const bulkconnect = {
             'accessToken': conn.accessToken,
-            'apiVersion': '51.0',
+            'apiVersion': '54.0',
             'instanceUrl': conn.instanceUrl
         };
         try {
@@ -18,12 +18,13 @@ const fs = require('fs');
             // create a bulk insert job
             const jobRequest = {
                 'object': 'Account',
-                'operation': 'insert'
+                'operation': 'insert',
+                'lineEnding': 'CRLF'
             };
             const response = await bulkrequest.createDataUploadJob(jobRequest);
             if (response.id) {
                 // read csv data from the local file system
-                const data = await util.promisify(fs.readFile)(process.cwd() + "/account.csv", "UTF-8");
+                const data = await util.promisify(fs.readFile)(process.cwd() + "/GeneratedAccounts.csv", "UTF-8");
                 const status = await bulkrequest.uploadJobData(response.contentUrl, data);
                 if (status === 201) {
                     // close the job for processing
